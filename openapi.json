@@ -1,0 +1,179 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Map Prompt Builder",
+    "version": "1.0.0",
+    "description": "Generate TTRPG battle map prompts for AI image generation"
+  },
+  "servers": [
+    {
+      "url": "https://map-prompt-builder-production.up.railway.app",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/map-prompt": {
+      "post": {
+        "summary": "Generate Map Prompt",
+        "description": "Generate a TTRPG battle map prompt based on terrain, encounter, and other parameters",
+        "operationId": "map_prompt",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MapPromptIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Generated map prompt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "prompt": {
+                      "type": "string",
+                      "description": "The generated map prompt ready for AI image generation"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Root endpoint",
+        "operationId": "root",
+        "responses": {
+          "200": {
+            "description": "API information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {"type": "string"},
+                    "version": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "Health status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/privacy": {
+      "get": {
+        "summary": "Privacy policy",
+        "description": "Privacy policy for Custom GPT Actions compliance",
+        "operationId": "privacy",
+        "responses": {
+          "200": {
+            "description": "Privacy policy information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "privacy_policy": {
+                      "type": "object",
+                      "description": "Complete privacy policy for data handling"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MapPromptIn": {
+        "type": "object",
+        "required": ["terrain", "encounter"],
+        "properties": {
+          "terrain": {
+            "type": "string",
+            "description": "The main terrain type (e.g., forest, dungeon, cave)",
+            "example": "dungeon"
+          },
+          "encounter": {
+            "type": "string",
+            "description": "What enemies or events are present",
+            "example": "skeleton warriors"
+          },
+          "feature": {
+            "type": "string",
+            "description": "Special features or landmarks",
+            "example": "ancient altar",
+            "nullable": true
+          },
+          "grid_size": {
+            "type": "integer",
+            "description": "Grid dimensions for the map",
+            "default": 30,
+            "example": 25,
+            "nullable": true
+          },
+          "style": {
+            "type": "string",
+            "description": "Art style for the map",
+            "default": "OSR",
+            "example": "dark fantasy",
+            "nullable": true
+          },
+          "color_tone": {
+            "type": "string",
+            "description": "Color palette",
+            "default": "muted",
+            "example": "dark",
+            "nullable": true
+          },
+          "vtt_ready": {
+            "type": "boolean",
+            "description": "Optimized for Virtual Tabletop",
+            "default": true,
+            "example": true,
+            "nullable": true
+          },
+          "extra_tags": {
+            "type": "string",
+            "description": "Additional descriptive tags",
+            "example": "magical runes, cobwebs",
+            "nullable": true
+          }
+        }
+      }
+    }
+  }
+}
